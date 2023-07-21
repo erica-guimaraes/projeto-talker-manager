@@ -16,4 +16,14 @@ serverTalker.get('/', async (req, res) => {
     res.status(200).json(talkers);
 });
 
+serverTalker.get('/:id', async (req, res) => {
+    const talkers = await getTalk();
+    const { id } = req.params;
+    const person = talkers.find((per) => per.id === Number(id));
+    if (!person) {
+        return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+    } 
+    return res.status(200).json(person);
+});
+
 module.exports = serverTalker;
