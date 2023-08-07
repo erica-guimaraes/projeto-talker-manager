@@ -47,4 +47,22 @@ validationWatchedAt, validationRate, async (req, res) => {
     res.status(201).json(newTalker);
 });
 
+talkersRouter.put('/:id', validationAuthorization, validationName, validationAge, validationTalk, 
+validationWatchedAt, validationRate, async (req, res) => {
+    const { id } = req.params;
+    const data = await getTalk();
+    const updatedTalkers = data.filter((talker) => talker.id !== Number(id)); 
+    if (updatedTalkers.length === data.length) {
+        return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+      }
+    const talker = req.body;
+    const newTalker = {
+        id: Number(id),
+        ...talker,
+      };
+    updatedTalkers.push(newTalker);
+    await writeJSON(updatedTalkers);
+    return res.status(200).json(newTalker);
+});
+
 module.exports = talkersRouter;
