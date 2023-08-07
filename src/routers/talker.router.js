@@ -65,4 +65,12 @@ validationWatchedAt, validationRate, async (req, res) => {
     return res.status(200).json(newTalker);
 });
 
+talkersRouter.delete('/:id', validationAuthorization, async (req, res) => {
+    const { id } = req.params;
+    const data = await getTalk();
+    const updatedTalkers = data.filter((talker) => talker.id !== Number(id)); 
+    await writeJSON(updatedTalkers);
+    return res.status(204).json({});
+});
+
 module.exports = talkersRouter;
