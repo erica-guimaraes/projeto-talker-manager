@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 
-const serverTalker = express.Router();
+const talkersRouter = express.Router();
 
 const pathTalker = path.resolve(__dirname, '../talker.json');
 
@@ -11,12 +11,12 @@ async function getTalk() {
     return JSON.parse(talkers);
 }
 
-serverTalker.get('/', async (req, res) => {
+talkersRouter.get('/', async (req, res) => {
     const talkers = await getTalk();
     res.status(200).json(talkers);
 });
 
-serverTalker.get('/:id', async (req, res) => {
+talkersRouter.get('/:id', async (req, res) => {
     const talkers = await getTalk();
     const { id } = req.params;
     const person = talkers.find((per) => per.id === Number(id));
@@ -26,4 +26,4 @@ serverTalker.get('/:id', async (req, res) => {
     return res.status(200).json(person);
 });
 
-module.exports = serverTalker;
+module.exports = talkersRouter;
